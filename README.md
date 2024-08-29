@@ -17,7 +17,7 @@ Este es un portfolio personal que muestra mis proyectos y experiencia. El backen
 
 1. Clona este repositorio:
    ```bash
-   git clone <https://github.com/ArayaCG/Portfolio.git>
+   git clone https://github.com/ArayaCG/Portfolio.git
    ```
 
 2. Navega al directorio del proyecto:
@@ -32,12 +32,7 @@ Este es un portfolio personal que muestra mis proyectos y experiencia. El backen
 
 4. Crea un archivo `.env` basado en el archivo `.env.example` y configura tus credenciales de Cloudinary y otros parámetros necesarios.
 
-5. Ejecuta las migraciones (si es necesario):
-   ```bash
-   npm run typeorm migration:run
-   ```
-
-6. Inicia el servidor:
+5. Inicia el servidor:
    ```bash
    npm start
    ```
