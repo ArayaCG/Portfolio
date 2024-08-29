@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { getProjects } from "../controllers/project.controller";
+import projectRoute from "./projectRoute";
+import contactMessageRoute from "./contactMessageRoute";
 
 
 const router: Router = Router();
 
-router.get("/Projects", getProjects)
-router.post("/Projects")
-router.delete("/Projects")
+router.use("/projects", projectRoute);
+router.use("/contactMessage", contactMessageRoute);
 
 export default router;

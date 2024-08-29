@@ -1,7 +1,7 @@
-import { DataSource } from "typeorm"
+import { DataSource } from "typeorm";
 import { BASE_DATOS, PASSWORD_POSTGRE } from "./envs";
 import { Project } from "../entities/Project";
-import { contactMessage } from "../entities/ContactMessage";
+import { ContactMessage } from "../entities/ContactMessage";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -12,8 +12,7 @@ export const AppDataSource = new DataSource({
     database: BASE_DATOS,
     synchronize: true,
     logging: false,
-    entities: [Project, contactMessage],
+    entities: [Project, ContactMessage],
     subscribers: [],
     migrations: [],
-    
-})
+});

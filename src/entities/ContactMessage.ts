@@ -1,12 +1,16 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name: "contactMessages",
 })
-export class contactMessage {
+export class ContactMessage {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({
+        length: 100,
+    })
+    name: string;
     @Column({
         length: 100,
     })
@@ -15,7 +19,7 @@ export class contactMessage {
     @Column()
     message: string;
 
-    @Column()
+    @CreateDateColumn()
     created_at: Date
 
 }
