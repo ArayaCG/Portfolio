@@ -18,7 +18,7 @@ export const getSkills = async (req: Request, res: Response): Promise<void> => {
 
 export const getSkillById = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id);
+        const id = parseInt(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id, 10);
         const skill = await new SkillService().getSkillById(id);
 
         if (!skill) {
@@ -46,7 +46,7 @@ export const createSkill = async (req: Request, res: Response): Promise<void> =>
     } catch (error) {
         console.error("Error al crear habilidad:", error);
         res.status(500).json({
-            message: error instanceof Error ? error.message : "Error al crear la habilidad",
+            message: "Error al crear la habilidad",
         });
     }
 };
@@ -65,14 +65,14 @@ export const createSkills = async (req: Request, res: Response): Promise<void> =
     } catch (error) {
         console.error("Error al crear habilidades:", error);
         res.status(500).json({
-            message: error instanceof Error ? error.message : "Error al crear las habilidades",
+            message: "Error al crear las habilidades",
         });
     }
 };
 
 export const updateSkill = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id);
+        const id = parseInt(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id, 10);
         const skillData: Partial<SkillDto> = req.body;
 
         const result = await new SkillService().updateSkill(id, skillData);
@@ -80,20 +80,20 @@ export const updateSkill = async (req: Request, res: Response): Promise<void> =>
     } catch (error) {
         console.error(`Error al actualizar habilidad:`, error);
         res.status(500).json({
-            message: error instanceof Error ? error.message : "Error al actualizar la habilidad",
+            message: "Error al actualizar la habilidad",
         });
     }
 };
 
 export const deleteSkill = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id);
+        const id = parseInt(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id, 10);
         const result = await new SkillService().deleteSkill(id);
         res.status(200).json(result);
     } catch (error) {
         console.error(`Error al eliminar habilidad:`, error);
         res.status(500).json({
-            message: error instanceof Error ? error.message : "Error al eliminar la habilidad",
+            message: "Error al eliminar la habilidad",
         });
     }
 };

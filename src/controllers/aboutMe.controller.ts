@@ -34,7 +34,7 @@ export const createAboutMe = async (req: Request, res: Response): Promise<void> 
     } catch (error) {
         console.error("Error en createAboutMe:", error);
         res.status(500).json({
-            message: error instanceof Error ? error.message : "Error al crear About Me",
+            message: "Error al crear About Me",
         });
     }
 };
@@ -48,7 +48,7 @@ export const updateAboutMe = async (req: Request, res: Response): Promise<void> 
     } catch (error) {
         console.error("Error en updateAboutMe:", error);
         res.status(500).json({
-            message: error instanceof Error ? error.message : "Error al actualizar About Me",
+            message: "Error al actualizar About Me",
         });
     }
 };
@@ -61,7 +61,7 @@ export const deleteAboutMe = async (req: Request, res: Response): Promise<void> 
     } catch (error) {
         console.error("Error en deleteAboutMe:", error);
         res.status(500).json({
-            message: error instanceof Error ? error.message : "Error al eliminar About Me",
+            message: "Error al eliminar About Me",
         });
     }
 };

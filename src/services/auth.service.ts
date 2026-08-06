@@ -23,9 +23,6 @@ export class AuthService {
 
         const token = generateAdminToken();
 
-        admin.token = token;
-        await this.adminRepository.save(admin);
-
         return { token };
     }
 
@@ -44,7 +41,6 @@ export class AuthService {
             username,
             email,
             password: hashedPassword,
-            token: generateAdminToken(),
         });
 
         await this.adminRepository.save(admin);

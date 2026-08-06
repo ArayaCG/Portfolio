@@ -18,14 +18,13 @@ export const getAllEducations = async (req: Request, res: Response): Promise<voi
         console.error("Error al obtener educaciones:", error);
         res.status(500).json({
             message: "Error interno del servidor al obtener educaciones",
-            error: error instanceof Error ? error.message : "Error desconocido",
         });
     }
 };
 
 export const getEducationById = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id, 10);
 
         if (isNaN(id)) {
             res.status(400).json({ message: "ID inválido" });
@@ -44,7 +43,6 @@ export const getEducationById = async (req: Request, res: Response): Promise<voi
         console.error(`Error al obtener educación por ID:`, error);
         res.status(500).json({
             message: "Error interno del servidor al obtener educación",
-            error: error instanceof Error ? error.message : "Error desconocido",
         });
     }
 };
@@ -64,14 +62,13 @@ export const createEducation = async (req: Request, res: Response): Promise<void
         console.error("Error al crear educación:", error);
         res.status(500).json({
             message: "Error interno del servidor al crear educación",
-            error: error instanceof Error ? error.message : "Error desconocido",
         });
     }
 };
 
 export const updateEducation = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id, 10);
 
         if (isNaN(id)) {
             res.status(400).json({ message: "ID inválido" });
@@ -86,14 +83,13 @@ export const updateEducation = async (req: Request, res: Response): Promise<void
         console.error(`Error al actualizar educación:`, error);
         res.status(500).json({
             message: "Error interno del servidor al actualizar educación",
-            error: error instanceof Error ? error.message : "Error desconocido",
         });
     }
 };
 
 export const deleteEducation = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(Array.isArray(req.params.id) ? req.params.id[0] : req.params.id, 10);
 
         if (isNaN(id)) {
             res.status(400).json({ message: "ID inválido" });
@@ -107,7 +103,6 @@ export const deleteEducation = async (req: Request, res: Response): Promise<void
         console.error(`Error al eliminar educación:`, error);
         res.status(500).json({
             message: "Error interno del servidor al eliminar educación",
-            error: error instanceof Error ? error.message : "Error desconocido",
         });
     }
 };

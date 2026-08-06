@@ -19,7 +19,4 @@ export class Admin {
 
     @Column()
     password: string;
-
-    @Column()
-    token: string;
 }

@@ -1,5 +1,14 @@
 import { Router } from "express";
+import rateLimit from "express-rate-limit";
 import { AuthController } from "../controllers/auth.controller";
+
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 10,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { message: "Demasiados intentos de inicio de sesión. Intentá de nuevo más tarde." },
+});
 
 /**
  * @swagger
@@ -45,6 +54,6 @@ const authController = new AuthController();
  *       401:
  *         description: Credenciales incorrectas
  */
-authRouter.post("/login", (req, res) => authController.login(req, res));
+authRouter.post("/login", loginLimiter, (req, res) => authController.login(req, res));
 
 export default authRouter;

@@ -1,4 +1,4 @@
-FROM node:18-slim AS builder
+FROM node:22-slim AS builder
 
 WORKDIR /app
 
@@ -9,14 +9,11 @@ RUN npm ci
 # Copia el resto de los archivos
 COPY . .
 
-# Forzar la recompilación completa añadiendo una marca de tiempo al build
-RUN echo "Build timestamp: $(date)" > build-timestamp.txt
-
 # Compilar TypeScript
 RUN npx tsc
 
 # Etapa de producción
-FROM node:18-slim
+FROM node:22-slim
 
 WORKDIR /app
 
@@ -25,15 +22,16 @@ RUN npm ci --production
 
 COPY --from=builder /app/dist ./dist
 
-# Añade un archivo de versión para verificar qué versión está desplegada
-COPY --from=builder /app/build-timestamp.txt ./
+RUN mkdir -p dist/uploads && chown -R node:node /app
+
+USER node
 
 ENV NODE_ENV=production
 
 EXPOSE 3000
 
-# Agrega healthcheck
+# Agrega healthcheck (sin depender de curl, que no viene instalado en node:*-slim)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
+  CMD node -e "require('http').get('http://localhost:3000/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
 
 CMD ["node", "dist/index.js"]

@@ -1,6 +1,7 @@
 import "dotenv/config";
 
 export const PORT = process.env.PORT || "3000";
+export const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173,http://localhost:5174";
 export const EMAIL_USER = process.env.EMAIL_USER;
 export const EMAIL_PASS = process.env.EMAIL_PASS;
 export const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;

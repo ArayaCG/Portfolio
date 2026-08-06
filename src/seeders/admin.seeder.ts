@@ -1,5 +1,4 @@
 import { AppDataSource } from "../config/data-source";
-import { generateAdminToken } from "../config/auth";
 import { USERNAME_ADMIN, PASSWORD_ADMIN } from "../config/envs";
 import bcrypt from "bcryptjs";
 import { Admin } from "../entities/Admin";
@@ -23,7 +22,6 @@ export const initializeAdmin = async () => {
                 username: USERNAME_ADMIN,
                 email: `${USERNAME_ADMIN}@admin.com`,
                 password: hashedPassword,
-                token: generateAdminToken(),
             });
 
             await adminRepository.save(admin);

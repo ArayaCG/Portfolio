@@ -9,7 +9,6 @@ export const getExperiences = async (req: Request, res: Response): Promise<void>
         console.error("Error retrieving experiences:", error);
         res.status(500).json({
             message: "Error retrieving experiences",
-            error: error instanceof Error ? error.message : error,
         });
     }
 };
@@ -29,7 +28,6 @@ export const getExperienceById = async (req: Request, res: Response): Promise<vo
         console.error("Error retrieving experience:", error);
         res.status(500).json({
             message: "Error retrieving experience",
-            error: error instanceof Error ? error.message : error,
         });
     }
 };
@@ -50,7 +48,6 @@ export const createExperience = async (req: Request, res: Response): Promise<voi
         console.error("Error creating experience:", error);
         res.status(500).json({
             message: "Error creating experience",
-            error: error instanceof Error ? error.message : error,
         });
     }
 };
@@ -74,7 +71,6 @@ export const updateExperience = async (req: Request, res: Response): Promise<voi
 
         res.status(500).json({
             message: "Error updating experience",
-            error: error instanceof Error ? error.message : String(error),
         });
     }
 };
@@ -87,7 +83,6 @@ export const deleteExperience = async (req: Request, res: Response): Promise<voi
     } catch (error) {
         res.status(500).json({
             message: "Error deleting experience",
-            error: error instanceof Error ? error.message : error,
         });
     }
 };

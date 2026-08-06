@@ -8,7 +8,7 @@ export const getMessages = async (req: Request, res: Response): Promise<void> =>
         res.status(200).json(messages);
     } catch (error) {
         console.error("Error retrieving messages:", error);
-        res.status(500).json({ message: "Error retrieving messages", error });
+        res.status(500).json({ message: "Error retrieving messages" });
     }
 };
 
@@ -33,6 +33,6 @@ export const createMessage = async (req: Request, res: Response): Promise<void> 
         res.status(201).json(newMessage);
     } catch (error) {
         console.error("Error creating message:", error);
-        res.status(500).json({ message: "Error creating message", error });
+        res.status(500).json({ message: "Error creating message" });
     }
 };

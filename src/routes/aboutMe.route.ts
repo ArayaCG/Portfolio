@@ -1,9 +1,7 @@
 import { Router } from "express";
-import multer from "multer";
 import { getAboutMe, createAboutMe, updateAboutMe, deleteAboutMe } from "../controllers/aboutMe.controller";
 import { verifyToken } from "../middlewares/auth.middleware";
-
-const upload = multer({ dest: "uploads/" });
+import { upload } from "../config/multer.config";
 
 /**
  * @swagger
