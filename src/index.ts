@@ -7,6 +7,7 @@ import { initializeAdmin } from "./seeders/admin.seeder";
 AppDataSource.initialize()
     .then(async (res) => {
         console.log("Conexión realizada con éxito");
+        await AppDataSource.runMigrations();
         await initializeAdmin();
         server.listen(PORT, () => {
             console.log(`Server listening on PORT ${PORT}`);

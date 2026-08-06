@@ -18,14 +18,18 @@ export const AppDataSource = new DataSource({
             database: DB_NAME
           }
     ),
-    synchronize: true,
+    synchronize: false,
     logging: false,
     dropSchema: false,
     entities: [
-        process.env.NODE_ENV === "production" 
-            ? "dist/entities/**/*.js" 
+        process.env.NODE_ENV === "production"
+            ? "dist/entities/**/*.js"
             : "src/entities/**/*.ts"
     ],
     subscribers: [],
-    migrations: [],
+    migrations: [
+        process.env.NODE_ENV === "production"
+            ? "dist/migrations/**/*.js"
+            : "src/migrations/**/*.ts"
+    ],
 });
