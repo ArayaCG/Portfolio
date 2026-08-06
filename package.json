@@ -6,7 +6,10 @@
     "scripts": {
         "build": "tsc -v && tsc --listFiles",
         "start": "node dist/index.js",
-        "dev": "nodemon src/index.ts"
+        "dev": "nodemon src/index.ts",
+        "migration:generate": "typeorm-ts-node-commonjs migration:generate -d src/config/data-source.ts",
+        "migration:run": "typeorm-ts-node-commonjs migration:run -d src/config/data-source.ts",
+        "migration:revert": "typeorm-ts-node-commonjs migration:revert -d src/config/data-source.ts"
     },
     "keywords": [],
     "author": "",
@@ -27,7 +30,6 @@
     "dependencies": {
         "@types/swagger-jsdoc": "^6.0.4",
         "axios": "^1.8.4",
-        "bcrypt": "^5.1.1",
         "bcryptjs": "^3.0.2",
         "class-validator": "^0.14.1",
         "cloudinary": "^2.6.0",
@@ -35,6 +37,7 @@
         "dotenv": "^16.5.0",
         "express": "^5.1.0",
         "express-jwt": "^8.5.1",
+        "express-rate-limit": "^8.6.2",
         "ioredis": "^5.6.1",
         "jsonwebtoken": "^9.0.2",
         "multer": "^1.4.5-lts.2",
