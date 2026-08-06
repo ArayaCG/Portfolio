@@ -57,6 +57,14 @@ try {
             const end = stop < 0 ? inMemoryLists[key].length : stop + 1;
             return inMemoryLists[key].slice(start, end);
         },
+        ltrim: async (key: string, start: number, stop: number) => {
+            if (!inMemoryLists[key]) {
+                return "OK";
+            }
+            const end = stop < 0 ? inMemoryLists[key].length : stop + 1;
+            inMemoryLists[key] = inMemoryLists[key].slice(start, end);
+            return "OK";
+        },
     } as unknown as Redis;
 }
 

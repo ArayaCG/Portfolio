@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getVisitCounter, logVisit, getVisitLogs } from "../controllers/visitor.controller";
+import { getVisitCounter, logVisit, getVisitLogs, getMonthlyVisits } from "../controllers/visitor.controller";
 import { verifyToken } from "../middlewares/auth.middleware";
 
 /**
@@ -26,17 +26,8 @@ visitorRoute.get("/count", getVisitCounter);
  * @swagger
  * /api/visits/log:
  *   post:
- *     summary: Registrar una visita con ubicación
+ *     summary: Registrar una visita
  *     tags: [Visits]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               location:
- *                 type: string
  *     responses:
  *       201:
  *         description: Visita registrada correctamente
@@ -58,5 +49,21 @@ visitorRoute.post("/log", logVisit);
  *         description: No autorizado
  */
 visitorRoute.get("/logs", verifyToken, getVisitLogs);
+
+/**
+ * @swagger
+ * /api/visits/monthly:
+ *   get:
+ *     summary: Obtener el conteo de visitas por mes (últimos 12 meses, Requiere autenticación)
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Visits]
+ *     responses:
+ *       200:
+ *         description: Objeto con la cantidad de visitas por mes (formato YYYY-MM)
+ *       401:
+ *         description: No autorizado
+ */
+visitorRoute.get("/monthly", verifyToken, getMonthlyVisits);
 
 export default visitorRoute;

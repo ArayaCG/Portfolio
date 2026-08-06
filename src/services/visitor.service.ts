@@ -1,8 +1,14 @@
 import redis from "../config/redisClient";
-import axios from "axios";
 
 const VISITOR_KEY = "portfolio:visits";
 const VISITOR_LOGS_KEY = "portfolio:visit_logs";
+const VISITOR_LOGS_MAX = 500;
+const MONTHLY_KEY_PREFIX = "portfolio:visits:monthly:";
+
+function monthKey(date: Date): string {
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    return `${MONTHLY_KEY_PREFIX}${date.getUTCFullYear()}-${month}`;
+}
 
 export class VisitorService {
     private redis: typeof redis;
@@ -11,32 +17,14 @@ export class VisitorService {
         this.redis = redisClient;
     }
 
-    async logVisit(ip: string | string[] | undefined): Promise<{ message: string; visits: number }> {
-        let location = "Unknown, Unknown";
-        let visits = 0;
-
+    async logVisit(): Promise<{ message: string; visits: number }> {
         try {
-            const ipAddress = Array.isArray(ip) ? ip[0] : ip;
+            const visitData = { timestamp: new Date().toISOString() };
 
-            try {
-                const geoData = await axios.get(`http://ip-api.com/json/${ipAddress}?fields=country,city`);
-                const { country, city } = geoData.data;
-
-                if (country && city) {
-                    location = `${city}, ${country}`;
-                }
-            } catch (geoError) {
-                console.warn("Error obteniendo geolocalización", geoError);
-            }
-
-            const visitData = {
-                location: location,
-                timestamp: new Date().toISOString(),
-            };
-
-            visits = await this.redis.incr(VISITOR_KEY);
-
+            const visits = await this.redis.incr(VISITOR_KEY);
+            await this.redis.incr(monthKey(new Date()));
             await this.redis.lpush(VISITOR_LOGS_KEY, JSON.stringify(visitData));
+            await this.redis.ltrim(VISITOR_LOGS_KEY, 0, VISITOR_LOGS_MAX - 1);
 
             return {
                 message: "✅ Visita registrada en logs",
@@ -65,6 +53,25 @@ export class VisitorService {
         } catch (error) {
             console.error("Error obteniendo contador", error);
             throw new Error("Error al obtener contador");
+        }
+    }
+
+    async getMonthlyVisits(months = 12): Promise<Record<string, number>> {
+        try {
+            const now = new Date();
+            const result: Record<string, number> = {};
+
+            for (let i = 0; i < months; i++) {
+                const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
+                const label = monthKey(date).replace(MONTHLY_KEY_PREFIX, "");
+                const count = await this.redis.get(monthKey(date));
+                result[label] = count ? parseInt(count) : 0;
+            }
+
+            return result;
+        } catch (error) {
+            console.error("Error obteniendo visitas mensuales", error);
+            throw new Error("Error al obtener visitas mensuales");
         }
     }
 }
