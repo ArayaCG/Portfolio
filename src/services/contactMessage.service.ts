@@ -15,10 +15,7 @@ export const getContactMessagesService = async (): Promise<ContactMessage[]> => 
     }
 };
 
-export const createContactMessageService = async (
-    messageData: ContactMessageDto,
-    userIp: string
-): Promise<ContactMessage | null> => {
+const isRateLimited = async (userIp: string): Promise<boolean> => {
     try {
         const messageCountKey = `contact_messages:${userIp}`;
         const currentCount = await redisClient.incr(messageCountKey);
@@ -27,10 +24,22 @@ export const createContactMessageService = async (
             await redisClient.expire(messageCountKey, 3600);
         }
 
-        if (currentCount > 3) {
-            throw new Error("Limit exceeded: Too many messages from this IP");
-        }
+        return currentCount > 3;
+    } catch (error) {
+        console.error("Error checking contact message rate limit, allowing message through:", error);
+        return false;
+    }
+};
 
+export const createContactMessageService = async (
+    messageData: ContactMessageDto,
+    userIp: string
+): Promise<ContactMessage | null> => {
+    if (await isRateLimited(userIp)) {
+        return null;
+    }
+
+    try {
         const contactMessage = ContactMessageRepository.create(messageData);
         const result = await ContactMessageRepository.save(contactMessage);
         await transporter.sendMail({
